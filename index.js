@@ -6,6 +6,8 @@ dotenv.config();
 
 const app = express();
 
+app.use(express.json());
+
 async function connectDB() {
   await mongoose
     .connect(process.env.MONGO_URI)
