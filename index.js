@@ -1,12 +1,15 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import authRoute from "./routes/auth.routes.js";
 
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
+
+app.use("/api/auth", authRoute);
 
 async function connectDB() {
   await mongoose
