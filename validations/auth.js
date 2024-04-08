@@ -5,3 +5,8 @@ export const registerValidation = [
   body("email", "Неверный формат почты").isEmail(),
   body("password", "Минимальная длина пароля 6 символов").isLength({ min: 6 }),
 ];
+
+export const loginValidation = [
+  body("email", "Неверный формат почты").isEmail(),
+  body("password", "Минимальная длина пароля 6 символов").isLength({ min: 6 }),
+];
