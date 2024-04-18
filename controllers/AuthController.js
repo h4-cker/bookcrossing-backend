@@ -1,13 +1,9 @@
-import { Router } from "express";
-import UserModel from "../models/User.js";
-import bcrypt from "bcrypt";
-import {loginValidation, registerValidation} from "../validations/auth.js";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
+import UserModel from "../models/User.js";
+import bcrypt from "bcrypt";
 
-const authRoute = new Router();
-
-authRoute.post("/register", registerValidation, async (req, res) => {
+export const register = async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -54,9 +50,9 @@ authRoute.post("/register", registerValidation, async (req, res) => {
       .status(500)
       .json({ message: "Не удалось зарегистрировать пользователя" });
   }
-});
+};
 
-authRoute.post("/login", loginValidation, async (req, res) => {
+export const login = async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -97,6 +93,4 @@ authRoute.post("/login", loginValidation, async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Не удалось авторизоваться" });
   }
-});
-
-export default authRoute;
+};
