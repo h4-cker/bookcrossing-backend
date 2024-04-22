@@ -4,17 +4,16 @@ const AdSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
     book: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Book',
+      ref: "Book",
       required: true,
     },
-    image: {
-      data: Buffer,
-      contentType: String,
+    imageUrl: {
+      type: String,
       required: true,
     },
     description: {
@@ -27,7 +26,7 @@ const AdSchema = new mongoose.Schema(
     },
     type: {
       type: String, // пользователь будет выбирать из установленных PassType
-    }
+    },
   },
   {
     timestamps: true,
