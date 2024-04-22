@@ -5,4 +5,5 @@ export const adCreationValidation = [
   body("location", "Местоположение должно быть задано").notEmpty(),
   body("type", "Тип должен быть задан").notEmpty(),
   body("imageUrl", "В объявлении должна быть картинка").notEmpty(),
+  body("bookId", "Книга должна быть задана").notEmpty(),
 ];
