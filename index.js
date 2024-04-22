@@ -15,7 +15,7 @@ app.use(cors());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/ads", adsRoutes);
-app.use("/api/books/", booksRoutes);
+app.use("/api/books", booksRoutes);
 
 async function connectDB() {
   await mongoose
