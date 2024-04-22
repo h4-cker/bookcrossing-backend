@@ -15,4 +15,6 @@ router.post(
   AdController.create
 );
 
+router.get("/:id", AdController.getOne);
+
 export default router;
