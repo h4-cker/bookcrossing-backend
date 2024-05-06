@@ -13,7 +13,7 @@ const BookSchema = new mongoose.Schema(
     genre: {
       type: String, // пользователь будет выбирать из установленных Genre
     },
-    isbn: {
+    ISBN: {
       type: String,
       required: true,
     },
@@ -21,7 +21,7 @@ const BookSchema = new mongoose.Schema(
       type: String, // пользователь будет выбирать из установленных Language
       required: true,
     },
-    year: {
+    releaseYear: {
       type: Number,
     },
   },

@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/auth.js";
 import adsRoutes from "./routes/ads.js";
-import booksRoutes from "./routes/books.js";
 
 dotenv.config();
 
@@ -15,7 +14,6 @@ app.use(cors());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/ads", adsRoutes);
-app.use("/api/books", booksRoutes);
 
 async function connectDB() {
   await mongoose

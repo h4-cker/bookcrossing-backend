@@ -7,7 +7,7 @@ const AdSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    book: {
+    content: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Book",
       required: true,
