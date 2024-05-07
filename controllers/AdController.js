@@ -67,13 +67,28 @@ export const getOne = async (req, res) => {
   }
 };
 
-export const getAll = async (req, res) => {
+export const getAllFromLocation = async (req, res) => {
   try {
-    const ads = await AdModel.find().populate(["user", "book"]).exec();
-    res.json(ads);
+    const location = req.params.location;
+
+    const ads = await AdModel.find({ location: location })
+      .populate(["user", "content"])
+      .exec();
+
+    if (ads.length) {
+      ads.forEach((ad) => {
+        ad.user = { name: ad.user.name };
+      });
+
+      return res.json(ads);
+    } else {
+      return res.json({
+        message: "Объявления не найдены",
+      });
+    }
   } catch (err) {
     console.log(err);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Не удалось получить объявления",
     });
   }
