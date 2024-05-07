@@ -111,33 +111,40 @@ export const update = async (req, res) => {
 export const remove = async (req, res) => {
   try {
     const adId = req.params.id;
-    AdModel.findOneAndDelete(
-      {
-        _id: adId,
-      },
-      (e, ad) => {
-        if (e) {
-          console.log(e);
-          return res.status(500).json({
-            message: "Не удалось удалить объявление",
-          });
-        }
+    let contentId = undefined;
 
+    await AdModel.findByIdAndDelete(adId)
+      .then((ad) => {
         if (!ad) {
           return res.status(404).json({
             message: "Объявление не найдено",
           });
         }
 
-        res.json({
-          success: true,
+        contentId = ad.content;
+
+        return res.json({
+          message: "Объявление удалено",
         });
-      }
-    );
+      })
+      .catch((e) => {
+        console.log(e.message);
+        return res.status(500).json({
+          message: "Не удалось удалить объявление",
+        });
+      });
+
+    if (!contentId) {
+      return;
+    }
+
+    BookModel.findByIdAndDelete(contentId).catch((e) => {
+      console.log(e.message);
+    });
   } catch (e) {
-    console.log(e);
+    console.log(e.message);
     res.status(500).json({
-      message: "Не удалось получить объявление",
+      message: "Не удалось удалить объявление",
     });
   }
 };

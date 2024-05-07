@@ -17,4 +17,6 @@ router.post(
 
 router.get("/:id", AdController.getOne);
 
+router.delete("/:id", checkAuth, AdController.remove);
+
 export default router;
