@@ -49,7 +49,7 @@ export const getOne = async (req, res) => {
           });
         }
 
-        ad.user = { name: ad.user.name };
+        ad.user = { name: ad.user.name, _id: ad.user._id };
 
         res.json(ad);
       })
@@ -77,7 +77,34 @@ export const getAllFromLocation = async (req, res) => {
 
     if (ads.length) {
       ads.forEach((ad) => {
-        ad.user = { name: ad.user.name };
+        ad.user = { name: ad.user.name, _id: ad.user._id };
+      });
+
+      return res.json(ads);
+    } else {
+      return res.json({
+        message: "Объявления не найдены",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      message: "Не удалось получить объявления",
+    });
+  }
+};
+
+export const getAllFromUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const ads = await AdModel.find({ user: userId })
+      .populate(["user", "content"])
+      .exec();
+
+    if (ads.length) {
+      ads.forEach((ad) => {
+        ad.user = { name: ad.user.name, _id: ad.user._id };
       });
 
       return res.json(ads);

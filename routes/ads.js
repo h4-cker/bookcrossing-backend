@@ -17,6 +17,7 @@ router.post(
 
 router.get("/:id", AdController.getOne);
 router.get("/locations/:location", AdController.getAllFromLocation);
+router.get("/users/:id", AdController.getAllFromUser);
 
 router.delete("/:id", checkAuth, AdController.remove);
 
