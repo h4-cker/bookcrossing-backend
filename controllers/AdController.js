@@ -39,26 +39,19 @@ export const getOne = async (req, res) => {
   try {
     const adId = req.params.id;
 
-    await AdModel.findOne({ _id: adId })
+    const ad = await AdModel.findOne({ _id: adId })
       .populate(["user", "content"])
-      .exec()
-      .then((ad) => {
-        if (!ad) {
-          return res.status(404).json({
-            message: "Объявление не найдено",
-          });
-        }
+      .exec();
 
-        ad.user = { name: ad.user.name, _id: ad.user._id };
-
-        res.json(ad);
-      })
-      .catch((e) => {
-        console.log(e.message);
-        return res.status(500).json({
-          message: "Не удалось получить объявление",
-        });
+    if (!ad) {
+      return res.status(404).json({
+        message: "Объявление не найдено",
       });
+    }
+
+    ad.user = { name: ad.user.name, _id: ad.user._id };
+
+    return res.json(ad);
   } catch (e) {
     console.log(e.message);
     res.status(500).json({
