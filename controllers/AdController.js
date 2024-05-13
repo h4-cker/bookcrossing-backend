@@ -174,35 +174,26 @@ export const update = async (req, res) => {
 export const remove = async (req, res) => {
   try {
     const adId = req.params.id;
-    let contentId = undefined;
 
-    await AdModel.findByIdAndDelete(adId)
-      .then((ad) => {
-        if (!ad) {
-          return res.status(404).json({
-            message: "Объявление не найдено",
-          });
-        }
-
-        contentId = ad.content;
-
-        return res.json({
-          message: "Объявление удалено",
-        });
-      })
-      .catch((e) => {
-        console.log(e.message);
-        return res.status(500).json({
-          message: "Не удалось удалить объявление",
-        });
+    const ad = await AdModel.findById(adId);
+    if (!ad) {
+      return res.status(404).json({
+        message: "Объявление не найдено",
       });
-
-    if (!contentId) {
-      return;
     }
 
-    BookModel.findByIdAndDelete(contentId).catch((e) => {
-      console.log(e.message);
+    const content = await BookModel.findById(ad.content);
+    if (!content) {
+      return res.status(404).json({
+        message: "Контент не найден",
+      });
+    }
+
+    await AdModel.deleteOne({ _id: adId });
+    await BookModel.deleteOne({ _id: content._id });
+
+    return res.status(200).json({
+      message: "Объявление удалено",
     });
   } catch (e) {
     console.log(e.message);
