@@ -125,25 +125,53 @@ export const update = async (req, res) => {
   try {
     const adId = req.params.id;
 
+    const ad = await AdModel.findById(adId);
+    if (!ad) {
+      return res.status(404).json({
+        message: "Объявление не найдено",
+      });
+    }
+
+    const content = await BookModel.findById(ad.content);
+    if (!content) {
+      return res.status(404).json({
+        message: "Контент не найден",
+      });
+    }
+
     await AdModel.updateOne(
       {
         _id: adId,
       },
       {
         user: req.userId,
-        book: req.body.book,
-        image: req.body.image,
+        content: req.body.content,
+        imageUrl: req.body.imageUrl,
         description: req.body.description,
         location: req.body.location,
         type: req.body.type,
       }
     );
 
-    res.json({
-      success: true,
+    await BookModel.updateOne(
+      {
+        _id: content._id,
+      },
+      {
+        name: req.body.bookName,
+        author: req.body.bookAuthor,
+        genre: req.body.bookGenre,
+        ISBN: req.body.bookISBN,
+        language: req.body.bookLanguage,
+        year: req.body.bookReleaseYear,
+      }
+    );
+
+    return res.status(200).json({
+      message: "Объявление обновлено",
     });
   } catch (e) {
-    console.log(e);
+    console.log(e.message);
     res.status(500).json({
       message: "Не удалось обновить объявление",
     });

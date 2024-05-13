@@ -19,6 +19,8 @@ router.get("/:id", AdController.getOne);
 router.get("/locations/:location", AdController.getAllFromLocation);
 router.get("/users/:id", AdController.getAllFromUser);
 
+router.patch("/:id", checkAuth, AdController.update);
+
 router.delete("/:id", checkAuth, AdController.remove);
 
 export default router;
