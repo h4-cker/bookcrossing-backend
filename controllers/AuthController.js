@@ -50,13 +50,13 @@ export const login = async (req, res) => {
     const user = await UserModel.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ message: "Пользователь не найден" });
+      return res.status(400).json({ message: "Неверный логин или пароль" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
 
     if (!isPasswordValid) {
-      return res.status(400).json({ message: "Неверный пароль" });
+      return res.status(400).json({ message: "Неверный логин или пароль" });
     }
 
     const token = jwt.sign(
@@ -69,11 +69,11 @@ export const login = async (req, res) => {
       }
     );
 
-    res.json({
+    return res.json({
       message: "Авторизация прошла успешно",
       token,
     });
   } catch (error) {
-    res.status(500).json({ message: "Не удалось авторизоваться" });
+    return res.status(500).json({ message: "Не удалось авторизоваться" });
   }
 };
