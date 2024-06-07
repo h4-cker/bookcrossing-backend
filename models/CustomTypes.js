@@ -1,4 +1,4 @@
-const Genre = {
+export const Genre = {
   Thriller: 'thriller',
   Romance: 'romance',
   Fantasy: 'fantasy',
@@ -20,12 +20,12 @@ const Genre = {
   Travel: 'travel'
 }
 
-const PassType = {
+export const PassType = {
   Exchange: 'exchange',
   Free: 'free'
 }
 
-const Language = {
+export const Language = {
   Russian: 'russian',
   English: 'english'
   // дописать надо будет
