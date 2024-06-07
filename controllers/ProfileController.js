@@ -143,5 +143,25 @@ export const updateName = async (req, res) => {
 }
 
 export const removeMe = async (req, res) => {
+  try {
+    const userId = req.params.id;
 
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "Пользователь не найден",
+      });
+    }
+
+    await UserModel.deleteOne({ _id: userId });
+
+    return res.status(200).json({
+      message: "Пользователь удален",
+    });
+  } catch (e) {
+    console.log(e.message);
+    res.status(500).json({
+      message: "Не удалось удалить пользователя",
+    });
+  }
 }
