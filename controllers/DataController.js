@@ -1,6 +1,4 @@
 import AdModel from "../models/Ad.js";
-import BookModel from "../models/Book.js";
-import { Genre, PassType, Language } from "../models/CustomTypes"
 
 { // ad.content.year
   export const sortYearsByAsc = async (req, res) => {
