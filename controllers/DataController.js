@@ -241,3 +241,107 @@ import { Genre, PassType, Language } from "../models/CustomTypes"
     }
   }
 }
+
+export const searchByLanguage = async (req, res) => {
+  try {
+    const language = req.params.language;
+    const ads = await AdModel.find({ 'content.language': language })
+      .populate(["user", "content"])
+      .exec();
+
+    if (ads.length) {
+      ads.forEach((ad) => {
+        ad.user = { name: ad.user.name, _id: ad.user._id };
+      });
+
+      return res.json(ads);
+    } else {
+      return res.json({
+        message: "Объявления не найдены",
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      message: "Не удалось получить объявления",
+    });
+  }
+}
+
+export const searchByISBN = async (req, res) => {
+  try {
+    const isbn = req.params.isbn;
+    const ads = await AdModel.find({ 'content.ISBN': isbn })
+      .populate(["user", "content"])
+      .exec();
+
+    if (ads.length) {
+      ads.forEach((ad) => {
+        ad.user = { name: ad.user.name, _id: ad.user._id };
+      });
+
+      return res.json(ads);
+    } else {
+      return res.json({
+        message: "Объявления не найдены",
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      message: "Не удалось получить объявления",
+    });
+  }
+}
+
+export const searchByGenre = async (req, res) => {
+  try {
+    const genre = req.params.genre;
+    const ads = await AdModel.find({ 'content.genre': genre })
+      .populate(["user", "content"])
+      .exec();
+
+    if (ads.length) {
+      ads.forEach((ad) => {
+        ad.user = { name: ad.user.name, _id: ad.user._id };
+      });
+
+      return res.json(ads);
+    } else {
+      return res.json({
+        message: "Объявления не найдены",
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      message: "Не удалось получить объявления",
+    });
+  }
+}
+
+export const searchByPassType = async (req, res) => {
+  try {
+    const type = req.params.type;
+    const ads = await AdModel.find({ type: type })
+      .populate(["user", "content"])
+      .exec();
+
+    if (ads.length) {
+      ads.forEach((ad) => {
+        ad.user = { name: ad.user.name, _id: ad.user._id };
+      });
+
+      return res.json(ads);
+    } else {
+      return res.json({
+        message: "Объявления не найдены",
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      message: "Не удалось получить объявления",
+    });
+  }
+}
