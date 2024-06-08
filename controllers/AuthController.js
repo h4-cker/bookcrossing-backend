@@ -1,10 +1,13 @@
 import jwt from "jsonwebtoken";
 import UserModel from "../models/User.js";
+import RefreshSessionModel from "../models/RefreshSession.js";
 import bcrypt from "bcrypt";
+import { COOKIE_SETTINGS, ACCESS_TOKEN_EXPIRATION } from "../config.js";
 
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    const { fingerprint } = req;
 
     const userExists = await UserModel.findOne({ email });
 
@@ -25,19 +28,43 @@ export const register = async (req, res) => {
 
     const user = await doc.save();
 
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       {
         userId: user._id,
       },
-      process.env.JWT_KEY
+      process.env.ACCESS_TOKEN_KEY,
+      {
+        expiresIn: "15m",
+      }
     );
 
-    res.json({
+    const refreshToken = jwt.sign(
+      {
+        userId: user._id,
+      },
+      process.env.REFRESH_TOKEN_KEY,
+      {
+        expiresIn: "15d",
+      }
+    );
+
+    const refreshSession = new RefreshSessionModel({
+      user: user._id,
+      refreshToken,
+      fingerprint,
+    });
+
+    await refreshSession.save();
+
+    res.cookie("refreshToken", refreshToken, COOKIE_SETTINGS.REFRESH_TOKEN);
+
+    return res.json({
       message: "Пользователь создан",
-      token,
+      accessToken,
+      accessTokenExpiration: ACCESS_TOKEN_EXPIRATION,
     });
   } catch (error) {
-    res
+    return res
       .status(500)
       .json({ message: "Не удалось зарегистрировать пользователя" });
   }
@@ -63,7 +90,7 @@ export const login = async (req, res) => {
       {
         userId: user._id,
       },
-      process.env.JWT_KEY,
+      process.env.ACCESS_TOKEN_KEY,
       {
         expiresIn: "1h",
       }
