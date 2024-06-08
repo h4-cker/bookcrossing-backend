@@ -7,7 +7,7 @@ const RefreshSessionSchema = new mongoose.Schema({
     required: true,
   },
   refreshToken: String,
-  finger_print: String,
+  fingerprint: String,
 });
 
 export default mongoose.model("RefreshSession", RefreshSessionSchema);

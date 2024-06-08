@@ -51,7 +51,7 @@ export const register = async (req, res) => {
     const refreshSession = new RefreshSessionModel({
       user: user._id,
       refreshToken,
-      fingerprint,
+      fingerprint: fingerprint.hash,
     });
 
     await refreshSession.save();
@@ -110,7 +110,7 @@ export const login = async (req, res) => {
     const refreshSession = new RefreshSessionModel({
       user: user._id,
       refreshToken,
-      fingerprint,
+      fingerprint: fingerprint.hash,
     });
 
     await refreshSession.save();
@@ -123,6 +123,7 @@ export const login = async (req, res) => {
       accessTokenExpiration: ACCESS_TOKEN_EXPIRATION,
     });
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({ message: "Не удалось авторизоваться" });
   }
 };
