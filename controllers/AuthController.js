@@ -104,3 +104,22 @@ export const login = async (req, res) => {
     return res.status(500).json({ message: "Не удалось авторизоваться" });
   }
 };
+
+export const logout = async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+      throw new Error("Отсутствует refreshToken");
+    }
+
+    await RefreshSessionModel.deleteOne({ refreshToken: refreshToken });
+
+    res.clearCookie("refreshToken");
+
+    return res.json({ message: "Выход из аккаунта успешно выполнен" });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Не удалось выйти" });
+  }
+};
