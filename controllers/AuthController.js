@@ -73,6 +73,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const { fingerprint } = req;
 
     const user = await UserModel.findOne({ email });
 
@@ -86,19 +87,40 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Неверный логин или пароль" });
     }
 
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       {
         userId: user._id,
       },
       process.env.ACCESS_TOKEN_KEY,
       {
-        expiresIn: "1h",
+        expiresIn: "15m",
       }
     );
 
+    const refreshToken = jwt.sign(
+      {
+        userId: user._id,
+      },
+      process.env.REFRESH_TOKEN_KEY,
+      {
+        expiresIn: "15d",
+      }
+    );
+
+    const refreshSession = new RefreshSessionModel({
+      user: user._id,
+      refreshToken,
+      fingerprint,
+    });
+
+    await refreshSession.save();
+
+    res.cookie("refreshToken", refreshToken, COOKIE_SETTINGS.REFRESH_TOKEN);
+
     return res.json({
       message: "Авторизация прошла успешно",
-      token,
+      accessToken,
+      accessTokenExpiration: ACCESS_TOKEN_EXPIRATION,
     });
   } catch (error) {
     return res.status(500).json({ message: "Не удалось авторизоваться" });
@@ -117,7 +139,9 @@ export const logout = async (req, res) => {
 
     res.clearCookie("refreshToken");
 
-    return res.json({ message: "Выход из аккаунта успешно выполнен" });
+    return res
+      .status(200)
+      .json({ message: "Выход из аккаунта успешно выполнен" });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Не удалось выйти" });
