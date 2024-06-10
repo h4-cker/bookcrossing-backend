@@ -133,7 +133,7 @@ export const logout = async (req, res) => {
     const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
-      throw new Error("Отсутствует refreshToken");
+      throw new Error("Пользователь не авторизован");
     }
 
     await RefreshSessionModel.deleteOne({ refreshToken: refreshToken });
@@ -146,5 +146,88 @@ export const logout = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Не удалось выйти" });
+  }
+};
+
+export const refresh = async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+    const { fingerprint } = req;
+
+    if (!refreshToken) {
+      return res.status(403).json({ message: "Отсутствует refresh token" });
+    }
+
+    const refreshSession = await RefreshSessionModel.findOne({
+      refreshToken: refreshToken,
+    });
+
+    if (!refreshSession) {
+      return res
+        .status(403)
+        .json({ message: "Не найдена refresh session с таким токеном" });
+    }
+
+    if (refreshSession.fingerprint !== fingerprint.hash) {
+      return res
+        .status(403)
+        .json({
+          message:
+            "Fingerprint браузера запроса не совпадает с fingerprint сессии",
+        });
+    }
+
+    await RefreshSessionModel.deleteOne({ refreshToken: refreshToken });
+
+    let payload = undefined;
+
+    try {
+      payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
+    } catch (err) {
+      return res
+        .status(403)
+        .json({ message: "Срок действия refresh token истек" });
+    }
+
+    const userId = payload.userId;
+
+    const newAccessToken = jwt.sign(
+      {
+        userId: userId,
+      },
+      process.env.ACCESS_TOKEN_KEY,
+      {
+        expiresIn: "15m",
+      }
+    );
+
+    const newRefreshToken = jwt.sign(
+      {
+        userId: userId,
+      },
+      process.env.REFRESH_TOKEN_KEY,
+      {
+        expiresIn: "15d",
+      }
+    );
+
+    const newRefreshSession = new RefreshSessionModel({
+      user: userId,
+      refreshToken: newRefreshToken,
+      fingerprint: fingerprint.hash,
+    });
+
+    await newRefreshSession.save();
+
+    res.cookie("refreshToken", newRefreshToken, COOKIE_SETTINGS.REFRESH_TOKEN);
+
+    return res.status(200).json({
+      message: "Обновление токенов прошло успешно",
+      accessToken: newAccessToken,
+      accessTokenExpiration: ACCESS_TOKEN_EXPIRATION,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Не удалось обновить токен" });
   }
 };
