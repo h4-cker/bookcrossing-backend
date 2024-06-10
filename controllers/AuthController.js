@@ -118,13 +118,15 @@ export const login = async (req, res) => {
     res.cookie("refreshToken", refreshToken, COOKIE_SETTINGS.REFRESH_TOKEN);
 
     return res.json({
-      message: "Авторизация прошла успешно",
+      message: "Аутентификация прошла успешно",
       accessToken,
       accessTokenExpiration: ACCESS_TOKEN_EXPIRATION,
     });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Не удалось авторизоваться" });
+    return res
+      .status(500)
+      .json({ message: "Не удалось аутентифицировать пользователя" });
   }
 };
 
@@ -133,7 +135,7 @@ export const logout = async (req, res) => {
     const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
-      throw new Error("Пользователь не авторизован");
+      throw new Error("Отсутствует refresh token");
     }
 
     await RefreshSessionModel.deleteOne({ refreshToken: refreshToken });
@@ -169,12 +171,10 @@ export const refresh = async (req, res) => {
     }
 
     if (refreshSession.fingerprint !== fingerprint.hash) {
-      return res
-        .status(403)
-        .json({
-          message:
-            "Fingerprint браузера запроса не совпадает с fingerprint сессии",
-        });
+      return res.status(403).json({
+        message:
+          "Fingerprint браузера запроса не совпадает с fingerprint сессии",
+      });
     }
 
     await RefreshSessionModel.deleteOne({ refreshToken: refreshToken });
