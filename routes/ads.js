@@ -1,5 +1,6 @@
 import { Router } from "express";
 import checkAuth from "../middlewares/checkAuth.js";
+import checkSort from "../middlewares/checkSort.js";
 import { adCreationValidation } from "../validations/ads.js";
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";
 
@@ -16,7 +17,11 @@ router.post(
 );
 
 router.get("/books/:id", AdController.getOne);
-router.get("/locations/:location/books", AdController.getAllFromLocation);
+router.get(
+  "/locations/:location/books",
+  checkSort,
+  AdController.getAllFromLocation
+);
 router.get("/users/:id", AdController.getAllFromUser);
 
 router.patch("/books/:id", checkAuth, AdController.update);
