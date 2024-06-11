@@ -15,12 +15,12 @@ router.post(
   AdController.create
 );
 
-router.get("/:id", AdController.getOne);
-router.get("/locations/:location", AdController.getAllFromLocation);
+router.get("/books/:id", AdController.getOne);
+router.get("/locations/:location/books", AdController.getAllFromLocation);
 router.get("/users/:id", AdController.getAllFromUser);
 
-router.patch("/:id", checkAuth, AdController.update);
+router.patch("/books/:id", checkAuth, AdController.update);
 
-router.delete("/:id", checkAuth, AdController.remove);
+router.delete("/books/:id", checkAuth, AdController.remove);
 
 export default router;
