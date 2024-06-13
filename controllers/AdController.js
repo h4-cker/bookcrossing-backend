@@ -1,3 +1,4 @@
+import { DEFAULT_SORT_VALUE } from "../config.js";
 import AdModel from "../models/Ad.js";
 import BookModel from "../models/Book.js";
 
@@ -65,6 +66,7 @@ export const getAllFromLocation = async (req, res) => {
     const location = req.params.location;
 
     const ads = await AdModel.find({ location: location })
+      .sort({ createdAt: req.sort ? req.sort : DEFAULT_SORT_VALUE })
       .populate(["user", "content"])
       .exec();
 

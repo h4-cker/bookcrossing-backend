@@ -6,3 +6,5 @@ export const COOKIE_SETTINGS = {
 };
 
 export const ACCESS_TOKEN_EXPIRATION = 9e5;
+
+export const DEFAULT_SORT_VALUE = 1;
