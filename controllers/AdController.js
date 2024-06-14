@@ -65,12 +65,27 @@ export const getAllFromLocation = async (req, res) => {
   try {
     const location = req.params.location;
 
-    const ads = await AdModel.find({ location: location })
+    let ads = await AdModel.find({ location: location })
       .sort({ createdAt: req.sort ? req.sort : DEFAULT_SORT_VALUE })
       .populate(["user", "content"])
       .exec();
 
+    const contentIds = ads.map((ad) => {
+      return ad.content._id;
+    });
+
+    const books = await BookModel.find({
+      _id: { $in: contentIds },
+      ...req.query,
+    });
+
+    const filteredContentIds = books.map((book) => book._id);
+
     if (ads.length) {
+      ads = ads.filter((ad) => {
+        return filteredContentIds.some((id) => id.equals(ad.content._id));
+      });
+
       ads.forEach((ad) => {
         ad.user = { name: ad.user.name, _id: ad.user._id };
       });
