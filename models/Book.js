@@ -23,6 +23,7 @@ const BookSchema = new mongoose.Schema(
     },
     releaseYear: {
       type: Number,
+      required: true,
     },
   },
   {

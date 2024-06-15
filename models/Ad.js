@@ -26,6 +26,11 @@ const AdSchema = new mongoose.Schema(
     },
     type: {
       type: String, // пользователь будет выбирать из установленных PassType
+      required: true,
+    },
+    contacts: {
+      type: String,
+      required: true,
     },
   },
   {
