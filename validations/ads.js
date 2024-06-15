@@ -5,6 +5,7 @@ export const adCreationValidation = [
   body("location", "Местоположение должно быть задано").notEmpty(),
   body("type", "Тип должен быть задан").notEmpty(),
   body("imageUrl", "В объявлении должна быть картинка").notEmpty(),
+  body("contacts", "Контакты должны быть заданы").notEmpty(),
   body("bookName", "Название книги должно быть задано").notEmpty(),
   body("bookAuthor")
     .notEmpty()
@@ -25,5 +26,9 @@ export const adCreationValidation = [
     })
     .withMessage("Неверный формат ввода ISBN"),
   body("bookLanguage", "Язык должен быть задан").notEmpty(),
-  body("bookReleaseYear", "Год должен быть числом").isNumeric(),
+  body("bookReleaseYear")
+    .notEmpty()
+    .withMessage("Год выпуска должен быть задан")
+    .isNumeric()
+    .withMessage("Год должен быть числом"),
 ];

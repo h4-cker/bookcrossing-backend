@@ -11,6 +11,7 @@ export const create = async (req, res) => {
       ISBN: req.body.bookISBN,
       language: req.body.bookLanguage,
       year: req.body.bookReleaseYear,
+      releaseYear: req.body.bookReleaseYear,
     });
 
     const book = await bookDoc.save();
@@ -22,6 +23,7 @@ export const create = async (req, res) => {
       description: req.body.description,
       location: req.body.location,
       type: req.body.type,
+      contacts: req.body.contacts,
     });
 
     const ad = await adDoc.save();
