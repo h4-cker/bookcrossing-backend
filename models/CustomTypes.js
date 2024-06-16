@@ -1,32 +1,40 @@
 export const Genre = {
-  Thriller: 'thriller',
-  Romance: 'romance',
-  Fantasy: 'fantasy',
-  Scifi: 'scifi', // science fiction
-  Detective: 'detective',
-  Utopia: 'utopia',
-  Dystopia: 'dystopia',
-  Humor: 'humor',
-  Memoir: 'memoir',
-  Adventure: 'adventure',
-  Horror: 'horror',
-  Hifi: 'hifi', // historical fiction
-  Poetry: 'poetry',
-  Biography: 'biography',
-  Cookbooks: 'cookbooks',
-  Children: 'children',
-  Selfhelp: 'selfhelp', // саморазвитие
-  Religion: 'religion',
-  Travel: 'travel'
-}
+  Thriller: "Триллер",
+  Romance: "Романтика",
+  Fantasy: "Фантастика",
+  Scifi: "Научная Фантастика", // science fiction
+  Detective: "Детектив",
+  Utopia: "Утопия",
+  Dystopia: "Антиутопия",
+  Humor: "Юмор",
+  Memoir: "Мемуары",
+  Adventure: "Приключение",
+  Horror: "Ужасы",
+  Hifi: "Историческая фантастика", // historical fiction
+  Poetry: "Поэзия",
+  Biography: "Биография",
+  Cookbooks: "Кулинария",
+  Children: "Детские",
+  Selfhelp: "Саморазвитие", // саморазвитие
+  Religion: "Релегия",
+  Travel: "Путешествия",
+};
 
 export const PassType = {
-  Exchange: 'exchange',
-  Free: 'free'
-}
+  Exchange: "Обменяю",
+  Free: "Отдам",
+};
 
 export const Language = {
-  Russian: 'russian',
-  English: 'english'
-  // дописать надо будет
-}
+  Russian: "Русский",
+  English: "Английский",
+  Spanish: "Испанский",
+  French: "Французский",
+  Italian: "Итальянский",
+  German: "Немецкий",
+  Japanese: "Японский",
+  Korean: "Корейский",
+  Chinese: "Китайский",
+  Portuguese: "Португальский",
+  Arabic: "Арабский",
+};
