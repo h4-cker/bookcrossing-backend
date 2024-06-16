@@ -63,7 +63,7 @@ export const getOne = async (req, res) => {
   }
 };
 
-export const getAllFromLocation = async (req, res) => {
+export const getFromLocation = async (req, res) => {
   try {
     const location = req.params.location;
 
@@ -106,7 +106,7 @@ export const getAllFromLocation = async (req, res) => {
   }
 };
 
-export const getAllFromUser = async (req, res) => {
+export const getFromUser = async (req, res) => {
   try {
     const userId = req.params.id;
 

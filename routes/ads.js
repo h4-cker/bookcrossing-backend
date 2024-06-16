@@ -20,9 +20,9 @@ router.get("/books/:id", AdController.getOne);
 router.get(
   "/locations/:location/books",
   checkSort,
-  AdController.getAllFromLocation
+  AdController.getFromLocation
 );
-router.get("/users/:id", AdController.getAllFromUser);
+router.get("/users/:id", AdController.getFromUser);
 
 router.patch("/books/:id", checkAuth, AdController.update);
 
