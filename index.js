@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import Fingerprint from "express-fingerprint";
 import multer from "multer";
 import checkAuth from "./middlewares/checkAuth.js";
+import categoriesRoutes from "./routes/categories.js";
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.post("/api/upload", checkAuth, upload.single("image"), (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/ads", adsRoutes);
+app.use("/api/categories", categoriesRoutes);
 app.use("/api/uploads", express.static("uploads"));
 
 async function connectDB() {
