@@ -103,3 +103,4 @@ fabric.properties
 
 # Uploads directory
 uploads/*
+!uploads/.gitkeep 
