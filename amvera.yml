@@ -1,0 +1,14 @@
+meta:
+  environment: node
+  toolchain:
+    name: npm
+    version: 18
+build:
+  skip: false
+  artifacts:
+    "*": /
+run:
+  scriptName: index.js
+  command: npm run start
+  persistenceMount: /uploads
+  containerPort: "80"
