@@ -1,3 +1,4 @@
+---
 meta:
   environment: node
   toolchain:
@@ -6,9 +7,9 @@ meta:
 build:
   skip: false
   artifacts:
-    "*": /
+    '*': /
 run:
   scriptName: index.js
   command: npm run start
   persistenceMount: /uploads
-  containerPort: "80"
+  containerPort: 80
