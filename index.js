@@ -9,6 +9,7 @@ import Fingerprint from "express-fingerprint";
 import multer from "multer";
 import checkAuth from "./middlewares/checkAuth.js";
 import categoriesRoutes from "./routes/categories.js";
+import profileRoutes from "./routes/profile.js";
 
 dotenv.config();
 
@@ -44,6 +45,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/ads", adsRoutes);
 app.use("/api/categories", categoriesRoutes);
 app.use("/api/uploads", express.static("uploads"));
+app.use("/api/profile", profileRoutes);
 
 async function connectDB() {
   await mongoose
