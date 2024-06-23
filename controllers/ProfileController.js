@@ -1,4 +1,4 @@
-import UserModel from "../models/User";
+import UserModel from "../models/User.js";
 import AdModel from "../models/Ad.js";
 import bcrypt from "bcrypt";
 
@@ -21,10 +21,10 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-export const getMe = (req, res) => {
+export const getMe = async (req, res) => {
   try {
     const userId = req.params.id;
-    const me = UserModel.find({ _id: userId }).exec();
+    const me = await UserModel.findOne({ _id: userId }).exec();
 
     if (!me) {
       return res.status(404).json({

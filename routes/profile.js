@@ -5,7 +5,7 @@ import * as ProfileController from "../controllers/ProfileController.js";
 
 const router = new Router();
 
-router.post("/:id", checkAuth, ProfileController.getMe);
+router.get("/:id", checkAuth, ProfileController.getMe);
 
 router.patch("/name", checkAuth, ProfileController.updateName);
 router.patch("/email", checkAuth, ProfileController.updateEmail);
