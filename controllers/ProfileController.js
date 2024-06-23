@@ -1,11 +1,10 @@
-import UserModel from "../models/User"
+import UserModel from "../models/User";
 import AdModel from "../models/Ad.js";
 import bcrypt from "bcrypt";
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await AdModel.find()
-      .exec();
+    const users = await AdModel.find().exec();
 
     if (users.length) {
       return res.json(users);
@@ -20,13 +19,12 @@ export const getAllUsers = async (req, res) => {
       message: "Не удалось получить пользователей",
     });
   }
-}
+};
 
 export const getMe = (req, res) => {
   try {
     const userId = req.params.id;
-    const me = UserModel.find({ _id: userId})
-      .exec();
+    const me = UserModel.find({ _id: userId }).exec();
 
     if (!me) {
       return res.status(404).json({
@@ -41,11 +39,11 @@ export const getMe = (req, res) => {
       message: "Не удалось получить пользователя",
     });
   }
-}
+};
 
 export const updatePassword = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.userId;
     const password = req.params.password;
 
     const user = await UserModel.findById(userId);
@@ -63,7 +61,7 @@ export const updatePassword = async (req, res) => {
         _id: userId,
       },
       {
-        passwordHash: passwordHash
+        passwordHash: passwordHash,
       }
     );
 
@@ -76,11 +74,11 @@ export const updatePassword = async (req, res) => {
       message: "Не удалось обновить пароль",
     });
   }
-}
+};
 
 export const updateEmail = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.userId;
     const email = req.params.email;
 
     const user = await UserModel.findById(userId);
@@ -95,7 +93,7 @@ export const updateEmail = async (req, res) => {
         _id: userId,
       },
       {
-        email: email
+        email: email,
       }
     );
 
@@ -108,11 +106,11 @@ export const updateEmail = async (req, res) => {
       message: "Не удалось обновить почту",
     });
   }
-}
+};
 
 export const updateName = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.userId;
     const name = req.params.name;
 
     const user = await UserModel.findById(userId);
@@ -127,7 +125,7 @@ export const updateName = async (req, res) => {
         _id: userId,
       },
       {
-        name: name
+        name: name,
       }
     );
 
@@ -140,7 +138,7 @@ export const updateName = async (req, res) => {
       message: "Не удалось обновить имя",
     });
   }
-}
+};
 
 export const removeMe = async (req, res) => {
   try {
@@ -164,4 +162,4 @@ export const removeMe = async (req, res) => {
       message: "Не удалось удалить пользователя",
     });
   }
-}
+};
