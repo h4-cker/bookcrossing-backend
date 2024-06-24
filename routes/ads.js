@@ -22,7 +22,7 @@ router.get(
   checkSort,
   AdController.getFromLocation
 );
-router.get("/users/:id", AdController.getFromUser);
+router.get("/users/:id/books", AdController.getFromUser);
 
 router.patch("/books/:id", checkAuth, AdController.update);
 
