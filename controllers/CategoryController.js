@@ -54,3 +54,39 @@ export const getLocations = async (req, res) => {
     });
   }
 };
+
+export const getUserLocation = async (req, res) => {
+  try {
+    const userIp = req.query.ip;
+
+    const searchParams = new URLSearchParams({
+      ip: userIp,
+      lng: "ru",
+    }).toString();
+
+    const response = await fetch(
+      `https://data-api.oxilor.com/rest/network?${searchParams}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.OXILOR_API_TOKEN}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.region.countryCode != "RU") {
+      return res.status(200).json({
+        message: "Пользователь не из России. Возвращено дефолтное значение",
+        userLocation: "Москва",
+      });
+    }
+
+    return res.status(200).json({ userLocation: data.region.name });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Не удалось получить местоположение пользователя",
+    });
+  }
+};
