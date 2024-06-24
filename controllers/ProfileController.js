@@ -45,17 +45,26 @@ export const getMe = async (req, res) => {
 export const updatePassword = async (req, res) => {
   try {
     const userId = req.userId;
-    const password = req.params.password;
+    const { oldPassword, newPassword } = req.body;
 
-    const user = await UserModel.findById(userId);
+    const user = await UserModel.findOne({ _id: userId });
     if (!user) {
       return res.status(404).json({
         message: "Пользователь не найден",
       });
     }
 
+    const isPasswordValid = await bcrypt.compare(
+      oldPassword,
+      user.passwordHash
+    );
+
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Неверный пароль" });
+    }
+
     const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
+    const passwordHash = await bcrypt.hash(newPassword, salt);
 
     await UserModel.updateOne(
       {
