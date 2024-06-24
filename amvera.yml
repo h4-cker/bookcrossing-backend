@@ -4,10 +4,7 @@ meta:
   toolchain:
     name: npm
     version: 18
-build:
-  skip: false
-  artifacts:
-    '*': /
+
 run:
   scriptName: index.js
   command: npm run start
