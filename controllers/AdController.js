@@ -67,7 +67,7 @@ export const getFromLocation = async (req, res) => {
   try {
     const location = req.params.location;
 
-    let ads = await AdModel.find({ location: location })
+    let ads = await AdModel.find({ location: location, ...req.AdQueryParams })
       .sort({ createdAt: req.sort ? req.sort : DEFAULT_SORT_VALUE })
       .populate(["user", "content"])
       .exec();
@@ -78,7 +78,7 @@ export const getFromLocation = async (req, res) => {
 
     const books = await BookModel.find({
       _id: { $in: contentIds },
-      ...req.query,
+      ...req.bookQueryParams,
     });
 
     const filteredContentIds = books.map((book) => book._id);

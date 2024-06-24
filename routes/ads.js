@@ -5,6 +5,7 @@ import { adCreationValidation } from "../validations/ads.js";
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";
 
 import * as AdController from "../controllers/AdController.js";
+import modifyQuery from "../middlewares/modifyQuery.js";
 
 const router = new Router();
 
@@ -20,6 +21,7 @@ router.get("/books/:id", AdController.getOne);
 router.get(
   "/locations/:location/books",
   checkSort,
+  modifyQuery,
   AdController.getFromLocation
 );
 router.get("/users/:id/books", AdController.getFromUser);
