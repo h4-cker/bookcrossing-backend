@@ -5,5 +5,6 @@ import * as CategoryController from "../controllers/CategoryController.js";
 const router = new Router();
 
 router.get("/books", CategoryController.getBooksCategories);
+router.get("/locations", CategoryController.getLocations);
 
 export default router;
