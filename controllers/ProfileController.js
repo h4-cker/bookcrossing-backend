@@ -31,7 +31,8 @@ export const getMe = async (req, res) => {
         message: "Пользователь не найден",
       });
     } else {
-      return res.json(me);
+      delete me._doc.passwordHash;
+      return res.json({ userInfo: me, accountOwner: req.accountOwner });
     }
   } catch (e) {
     console.log(e.message);
