@@ -89,13 +89,19 @@ export const updatePassword = async (req, res) => {
 export const updateEmail = async (req, res) => {
   try {
     const userId = req.userId;
-    const email = req.params.email;
+    const { email, password } = req.body;
 
     const user = await UserModel.findById(userId);
     if (!user) {
       return res.status(404).json({
         message: "Пользователь не найден",
       });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Неверный пароль" });
     }
 
     await UserModel.updateOne(
@@ -121,7 +127,7 @@ export const updateEmail = async (req, res) => {
 export const updateName = async (req, res) => {
   try {
     const userId = req.userId;
-    const name = req.params.name;
+    const name = req.body.name;
 
     const user = await UserModel.findById(userId);
     if (!user) {
