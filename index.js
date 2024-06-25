@@ -10,6 +10,8 @@ import multer from "multer";
 import checkAuth from "./middlewares/checkAuth.js";
 import categoriesRoutes from "./routes/categories.js";
 import profileRoutes from "./routes/profile.js";
+import winston from "winston";
+import expressWinston from "express-winston";
 
 dotenv.config();
 
@@ -21,6 +23,20 @@ app.use(cors({ credentials: true }));
 app.use(
   Fingerprint({
     parameters: [Fingerprint.useragent, Fingerprint.acceptHeaders],
+  })
+);
+
+const { combine, timestamp, json, prettyPrint, errors } = winston.format;
+
+app.use(
+  expressWinston.logger({
+    transports: [new winston.transports.Console()],
+    format: combine(
+      errors({ stack: true }),
+      timestamp(),
+      json(),
+      prettyPrint()
+    ),
   })
 );
 
