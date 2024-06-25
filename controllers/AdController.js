@@ -52,7 +52,7 @@ export const getOne = async (req, res) => {
       });
     }
 
-    ad.user = { name: ad.user.name, _id: ad.user._id };
+    delete ad.user._doc.passwordHash;
 
     return res.json(ad);
   } catch (e) {
@@ -89,7 +89,7 @@ export const getFromLocation = async (req, res) => {
       });
 
       ads.forEach((ad) => {
-        ad.user = { name: ad.user.name, _id: ad.user._id };
+        delete ad.user._doc.passwordHash;
       });
 
       return res.json(ads);
@@ -116,7 +116,7 @@ export const getFromUser = async (req, res) => {
 
     if (ads.length) {
       ads.forEach((ad) => {
-        ad.user = { name: ad.user.name, _id: ad.user._id };
+        delete ad.user._doc.passwordHash;
       });
 
       return res.json(ads);

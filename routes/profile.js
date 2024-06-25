@@ -8,6 +8,8 @@ const router = new Router();
 
 router.get("/:id", checkAuth, checkOwnership, ProfileController.getMe);
 
+router.post("/setAvatar", checkAuth, ProfileController.setAvatar);
+
 router.patch("/name", checkAuth, ProfileController.updateName);
 router.patch("/email", checkAuth, ProfileController.updateEmail);
 router.patch("/password", checkAuth, ProfileController.updatePassword);

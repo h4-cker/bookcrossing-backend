@@ -194,3 +194,35 @@ export const removeMe = async (req, res) => {
     });
   }
 };
+
+export const setAvatar = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const avatarUrl = req.body.avatarUrl;
+
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "Пользователь не найден",
+      });
+    }
+
+    await UserModel.updateOne(
+      {
+        _id: userId,
+      },
+      {
+        avatarUrl: avatarUrl,
+      }
+    );
+
+    return res.status(200).json({
+      message: "Аватар обновлен",
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      message: "Не удалось обновить аватар",
+    });
+  }
+};
