@@ -45,7 +45,7 @@ const storage = multer.diskStorage({
     cb(null, "uploads");
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
+    cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 
@@ -53,7 +53,7 @@ const upload = multer({ storage });
 
 app.post("/api/upload", checkAuth, upload.single("image"), (req, res) => {
   res.json({
-    url: `uploads/${req.file.originalname}`,
+    url: `uploads/${req.file.filename}`,
   });
 });
 
