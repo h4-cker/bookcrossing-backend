@@ -1,5 +1,6 @@
 import UserModel from "../models/User.js";
 import AdModel from "../models/Ad.js";
+import BookModel from "../models/Book.js";
 import bcrypt from "bcrypt";
 
 export const getAllUsers = async (req, res) => {
@@ -166,6 +167,20 @@ export const removeMe = async (req, res) => {
         message: "Пользователь не найден",
       });
     }
+
+    const ads = await AdModel.find({ user: userId });
+
+    const contentIds = ads.map((ad) => {
+      return ad.content._id;
+    });
+
+    await BookModel.deleteMany({
+      _id: { $in: contentIds },
+    });
+
+    await AdModel.deleteMany({
+      user: userId,
+    });
 
     await UserModel.deleteOne({ _id: userId });
 
