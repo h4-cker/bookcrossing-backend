@@ -14,6 +14,6 @@ router.patch("/name", checkAuth, ProfileController.updateName);
 router.patch("/email", checkAuth, ProfileController.updateEmail);
 router.patch("/password", checkAuth, ProfileController.updatePassword);
 
-router.delete("/:id", checkAuth, ProfileController.removeMe);
+router.delete("/delete", checkAuth, ProfileController.removeMe);
 
 export default router;

@@ -159,7 +159,7 @@ export const updateName = async (req, res) => {
 
 export const removeMe = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.userId;
 
     const user = await UserModel.findById(userId);
     if (!user) {
