@@ -24,7 +24,7 @@ router.get(
   modifyQuery,
   AdController.getFromLocation
 );
-router.get("/users/:id/books", AdController.getFromUser);
+router.get("/users/:id/books", checkAuth, AdController.getFromUser);
 
 router.patch("/books/:id", checkAuth, AdController.update);
 
