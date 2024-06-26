@@ -24,6 +24,13 @@ export default (req, res, next) => {
       continue;
     }
 
+    if (param == "name") {
+      req.bookQueryParams[param] =
+        query[param][0].toUpperCase() + query[param].slice(1).toLowerCase();
+
+      continue;
+    }
+
     req.bookQueryParams[param] = query[param];
   }
 
