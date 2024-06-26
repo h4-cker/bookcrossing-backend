@@ -26,7 +26,7 @@ export const create = async (req, res) => {
       contacts: req.body.contacts,
     });
 
-    const ad = await adDoc.save();
+    await adDoc.save();
 
     res.status(200).json({ message: "Объявление успешно создано" });
   } catch (e) {
@@ -83,7 +83,7 @@ export const getFromLocation = async (req, res) => {
 
     const filteredContentIds = books.map((book) => book._id);
 
-    if (ads.length) {
+    if (books.length) {
       ads = ads.filter((ad) => {
         return filteredContentIds.some((id) => id.equals(ad.content._id));
       });
