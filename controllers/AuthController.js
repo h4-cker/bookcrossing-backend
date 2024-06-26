@@ -62,6 +62,7 @@ export const register = async (req, res) => {
       message: "Пользователь создан",
       accessToken,
       accessTokenExpiration: ACCESS_TOKEN_EXPIRATION,
+      userId: user._id,
     });
   } catch (error) {
     return res
@@ -121,6 +122,7 @@ export const login = async (req, res) => {
       message: "Аутентификация прошла успешно",
       accessToken,
       accessTokenExpiration: ACCESS_TOKEN_EXPIRATION,
+      userId: user._id,
     });
   } catch (error) {
     console.log(error.message);
