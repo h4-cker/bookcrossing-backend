@@ -28,7 +28,7 @@ export const create = async (req, res) => {
 
     const ad = await adDoc.save();
 
-    res.json(ad);
+    res.status(200).json({ message: "Объявление успешно создано" });
   } catch (e) {
     console.log(e.message);
 
@@ -54,7 +54,7 @@ export const getOne = async (req, res) => {
 
     delete ad.user._doc.passwordHash;
 
-    return res.json(ad);
+    return res.status(200).json(ad);
   } catch (e) {
     console.log(e.message);
     res.status(500).json({
@@ -92,9 +92,9 @@ export const getFromLocation = async (req, res) => {
         delete ad.user._doc.passwordHash;
       });
 
-      return res.json(ads);
+      return res.status(200).json(ads);
     } else {
-      return res.json({
+      return res.status(404).json({
         message: "Объявления не найдены",
       });
     }
@@ -119,9 +119,9 @@ export const getFromUser = async (req, res) => {
         delete ad.user._doc.passwordHash;
       });
 
-      return res.json(ads);
+      return res.status(200).json(ads);
     } else {
-      return res.json({
+      return res.status(404).json({
         message: "Объявления не найдены",
       });
     }
